@@ -6,3 +6,5 @@ langchain-tavily
 langchain
 langgraph
 python-dotenv
+ipython
+tavily-python
