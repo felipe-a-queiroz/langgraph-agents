@@ -73,21 +73,36 @@ model = ChatGoogleGenerativeAI(model="gemini-2.5-flash", temperature=0)
 
 abot = Agent(model, [tool], system=prompt)
 
-messages = [HumanMessage(content="Como estará o tempo em Recife amanhã?")]
+print("\n--- Agente de Pesquisa Interativo ---")
+print("Digite sua pergunta ou 'sair' para encerrar.")
 
-print("Iniciando a conversa...")
-final_result_state = None
+while True:
+    user_input = input("\nVocê: ")
+    if user_input.lower() == "sair":
+        print("Agente: Encerrando a conversa. Até logo!")
+        break
+    
+    messages = [HumanMessage(content=user_input)]
 
-for s in abot.graph.stream({'messages': messages}):
-    print(s)
-    print("-----")
-    final_result_state = s
+    print("Agente: Pensando e buscando...")
+    final_result_state = None
+    try:
+        current_state = {}
+        for s in abot.graph.stream({"messages": messages}):
+            current_state.update(s)
+        
+        print("\nAgente:")
+        if 'llm' in current_state and 'messages' in current_state['llm'] and current_state['llm']['messages']:
+            final_message = current_state['llm']['messages'][-1]
+            if hasattr(final_message, 'content'):
+                print(final_message.content[0]['text'])
+            else:
+                print("Não foi possível extrair o conteúdo da resposta final do LLM.")
+        else:
+            print("Não foi possível obter uma resposta do agente para esta pergunta.")
 
-print("Conversa finalizada.")
-print("Resposta final:")
-# Verifica se o estado final existe 
-if final_result_state and 'llm' in final_result_state and final_result_state['llm']['messages']:
-    # Acessa a lista de mensagens dentro de 'llm' e pega o conteúdo da última mensagem
-    print(final_result_state['llm']['messages'][-1].content[0]['text'])
-else:
-    print("Nenhuma resposta gerada pelo agente.")
+    except Exception as e:
+        print(f"Agente: Ocorreu um erro durante a execução: {e}")
+        print("Tente novamente ou digite 'sair'.")
+
+print("\n--- Conversa Encerrada ---")
