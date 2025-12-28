@@ -1,0 +1,8 @@
+google-genai
+google-ai-generativelanguage==0.6.15
+langchain-google-genai
+langchain-community
+langchain-tavily
+langchain
+langgraph
+python-dotenv
