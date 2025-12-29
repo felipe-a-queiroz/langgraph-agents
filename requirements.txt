@@ -7,4 +7,7 @@ langchain
 langgraph
 python-dotenv
 ipython
+tavily
 tavily-python
+ddgs
+bs4
