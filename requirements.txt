@@ -11,3 +11,5 @@ tavily
 tavily-python
 ddgs
 bs4
+selenium
+webdriver-manager
