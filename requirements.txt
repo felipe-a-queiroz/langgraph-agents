@@ -13,3 +13,5 @@ ddgs
 bs4
 selenium
 webdriver-manager
+aiosqlite
+langgraph-checkpoint-sqlite
